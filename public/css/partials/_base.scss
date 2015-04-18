@@ -2,7 +2,7 @@
 h1, h2, h3, h4, h5 {
   font-family: $header-font-stack;
 }
-p, a, blockquote, span {
+p, a, ul, li, blockquote, span {
   font-family: $base-font-stack;
 }
 h1 {
@@ -14,6 +14,9 @@ h2 {
   margin: 20px 0 10px;
   font-size: 1.2em;
   color: #373737;
+}
+a {
+  text-decoration: none;
 }
 
 // objects
@@ -69,7 +72,6 @@ header {
 
   a {
     font-weight: lighter;
-    text-decoration: none;
     color: #d0d0d0;
 
     &:hover {
@@ -110,7 +112,7 @@ header {
 }
 
 // here starts a single question item
-.question-item {
+li {
   padding: 20px 30px;
   margin: 10px 0;
   border-radius: 5px;
@@ -163,8 +165,53 @@ header {
   a {
     color: black;
   }
+  li {
+    border: 2px solid white;
+  }
   .active {
     border: 2px solid #3BBBB1;
+  }
+}
+
+// let's style the homepage
+.index {
+  .hero {
+    padding: 20px 40px;
+    background-color: white;
+    @include bp-small {
+      padding: 20px;
+    }
+  }
+
+  h2 {
+    font-size: 1.8em;
+    color: #3BBBB1;
+  }
+
+  p {
+    font-size: 1.2em;
+    line-height: 1.2em;
+    max-width: 440px;
+    @include bp-small {
+      font-size: 1em;
+    }
+  }
+
+  .links {
+    text-align: center;
+    font-weight: bold;
+    a {
+      display:block;
+      padding: 20px 30px;
+      margin: 10px 0;
+      border-radius: 5px;
+      background-color: #464648;
+      color: white;
+    }
+    li {
+      padding: 0;
+      background-color: #464648;
+    }
   }
 }
 
