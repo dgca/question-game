@@ -1,14 +1,20 @@
 // fonts
-h1, h2, h3, h4, h5, p, pre, blockquote {
+h1, h2, h3, h4, h5 {
+  font-family: $header-font-stack;
+}
+p, a, blockquote {
   font-family: $base-font-stack;
 }
 h1 {
-  font-size: 1.8em;
-  font-weight: 200;
+  font-size: 1.6em;
+  font-weight: lighter;
   color: #d0d0d0;
 }
 
 // objects
+.clearfix {
+  @include clearfix;
+}
 .disp-tbl {
   display: table;
 }
@@ -25,16 +31,37 @@ h1 {
 .flt-r {
   float: right;
 }
+.spanbutton {
+  padding: 20px;
+  border-radius: 10px;
+  color: white;
+  background-color: #E06363;
+
+  &:hover {
+    background-color: #C75A5B;
+  }
+}
 
 // body
 body {
-  background-color: peachpuff;
+  background-color: #E6E6E6;
 }
 
 // header
 header {
   padding: 20px 10px;
   background-color: #464648;
+
+  a {
+    font-weight: lighter;
+    text-decoration: none;
+    color: #d0d0d0;
+
+    &:hover {
+      text-decoration: underline;
+      color: white;
+    }
+  }
 }
 .header-wrap {
   margin: 0 auto;
@@ -44,8 +71,19 @@ header {
 
 // content section
 .content {
-  padding: 20px 10px;
+  padding: 10px;
 }
+.content-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+//add some Qs, bro
+.add-button {
+  float: right;
+}
+
+// here come the questions
 .questions-list {
   max-width: 900px;
   margin: 0 auto;
@@ -54,10 +92,9 @@ header {
 // here starts a single question item
 .question-item {
   padding: 20px 30px;
-  margin-bottom: 10px;
+  margin: 10px 0;
   border-radius: 5px;
   background-color: white;
-  @include clearfix;
 }
 .qbox {
   width: 85%;
@@ -88,10 +125,6 @@ header {
   .pipe {
     margin: 0 5px;
   }
-}
-
-.textx {
-  display:table;
 }
 
 
