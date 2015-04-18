@@ -9,15 +9,21 @@ h1 {
 }
 
 // objects
-.tbl {
+.disp-tbl {
   display: table;
 }
-.tbl-mid {
+.disp-tbl-mid {
   display: table-cell;
   vertical-align: middle;
 }
+.disp-ib {
+  display: inline-block;
+}
 .txt-r {
   text-align: right;
+}
+.flt-r {
+  float: right;
 }
 
 // header
@@ -37,15 +43,35 @@ header {
   max-width: 900px;
   margin: 0 auto;
 }
+
+// here starts a single question item
 .question-item {
-  padding: 40px 30px;
+  padding: 20px 30px;
   border-radius: 5px;
   background-color: white;
+  @include clearfix;
+}
+.question {
+  margin-bottom: 10px;
+  font-size: 1.2em;
+}
+.vote {
+  width: 34px;
+  height: 38px;
+
+  &.inactive {
+    background-image: url(../assets/inactive.png);
+  }
+  &.active {
+    background-image: url(../assets/active.png);
+  }
 }
 
-/*
-Classes:
-master-wrapper
-content
-questions-list
-*/
+.meta {
+  font-size: 0.8em;
+  color: #999999;
+  // space out the pipe in the question meta
+  .pipe {
+    margin: 0 5px;
+  }
+}
