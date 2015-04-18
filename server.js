@@ -176,15 +176,14 @@ io.on('connection', function (socket) {
     });
   });
   socket.on('new_user', function () {
-      var user = users[Math.floor(Math.random()*users.length)];
-      if (user && user.user) {
-        socket.emit('new_user_done', user.user);
-        var questions = [];
-        redisClient.srandmember('questions-app:questions', 4, function (err, result) {
-          console.log('hi');
-          socket.emit('new_questions_done', result);
-        });
-      }
+    var user;
+    while (!user || !user.user) {
+      user = users[Math.floor(Math.random()*users.length)];
+    }
+    io.emit('new_user_done', user.user);
+    redisClient.srandmember('questions-app:questions', 4, function (err, result) {
+      io.emit('new_questions_done', result);
+    });
   });
   socket.on('disconnect', function() {
     var i;
