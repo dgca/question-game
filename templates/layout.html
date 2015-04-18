@@ -1,8 +1,15 @@
 <html>
     <head>
-        <link rel="stylesheet" href="/style.css">
+        <title>PKI Questions</title>
+        <link rel="stylesheet" href="/css/style.css">
     </head>
     <body>
         <%- body %>
+        <script src="bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="/scripts/app.js"></script>
+        <script src="/scripts/socket.io.js"></script>
+        <script>
+            var socket = io();
+        </script>
     </body>
 </html>

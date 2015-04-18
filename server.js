@@ -10,7 +10,7 @@ var everyauth = require('everyauth'),
   render = require('connect-render'),
   ejs = require('ejs'),
   app = connect(),
-  io = require('socket.io')(app.server);
+  io = require('socket.io');
 
 everyauth.google
   .appId('494665940570-7329c04lpf6vh98q179c0l9sg9d929jg.apps.googleusercontent.com')
@@ -85,7 +85,7 @@ app.use('/create', requireGoogleAuth);
 app.use('/admin', requireGoogleAuth);
 app.use('/vote', requireGoogleAuth);
 
-app.use(
+var server = app.use(
   connectRoute(function (app) {
     app.get('/', function (req) {
       req.redirect('/vote');
@@ -106,8 +106,18 @@ app.use(
       res.end('admin');
     });
   })
-).listen(1337);
+).listen(1337, function () {
+  console.log('Running at http://localhost:1337');
+});
+
+// SOCKET SERVER
+io = io.listen(server);
+var users = [];
+var questions = [];
 
 io.on('connection', function(socket){
   console.log('a user connected');
 });
+
+
+
