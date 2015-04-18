@@ -18,6 +18,9 @@ h2 {
 a {
   text-decoration: none;
 }
+strong {
+  font-weight: bold;
+}
 
 // objects
 .clearfix {
@@ -220,7 +223,20 @@ li {
 // let's style the admin
 
 .admin {
-
+  .join-url {
+    margin-bottom: 10px;
+  }
+  .user {
+    text-align: center;
+    img {
+      width: 300px;
+      border-radius: 50%;
+    }
+    span {
+      font-size: 2em;
+      font-weight: bold;
+    }
+  }
 }
 
 // footer
