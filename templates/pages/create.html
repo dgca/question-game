@@ -1,7 +1,7 @@
-<section class="content play-session">
+<section class="content create">
   <div class="content-wrapper">
 
-    <h2>Create Question Form</h2>
+    <h2>Add your question to the mix!</h2>
     <% if (typeof dangerFlash !== 'undefined') { %>
         <span class="danger-message">
             <%- dangerFlash %>
@@ -10,8 +10,8 @@
 
     <form method="POST">
         <label for="question">Question</label>
-        <textarea name="question" id="question" rows="3"></textarea>
-        <button type="submit">Submit</button>
+        <textarea name="question" id="question" rows="15"></textarea>
+        <button class="flt-r" type="submit">Submit</button>
     </form>
 
   </div>
