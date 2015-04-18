@@ -1,0 +1,20 @@
+{
+  "name": "questions",
+  "version": "0.0.0",
+  "authors": [
+    "Daniel Wolf <daniel.wolf@punchkickinteractive.com>"
+  ],
+  "moduleType": [
+    "amd",
+    "es6",
+    "globals"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
