@@ -6,10 +6,11 @@
     <body>
         <%- body %>
         <script src="bower_components/jquery/dist/jquery.min.js"></script>
-        <script src="/scripts/app.js"></script>
         <script src="/scripts/socket.io.js"></script>
         <script>
-            var socket = io();
+            var USERNAME = '<%- name %>',
+                USERIMG = '<%- img %>';
         </script>
+        <script src="/scripts/app.js"></script>
     </body>
 </html>

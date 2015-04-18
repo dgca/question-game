@@ -10,7 +10,11 @@ var everyauth = require('everyauth'),
   render = require('connect-render'),
   ejs = require('ejs'),
   app = connect(),
-  io = require('socket.io');
+  io = require('socket.io'),
+  redis = require('redis'),
+  users = [],
+  redisClient = redis.createClient();
+
 
 everyauth.google
   .appId('494665940570-7329c04lpf6vh98q179c0l9sg9d929jg.apps.googleusercontent.com')
@@ -97,27 +101,57 @@ var server = app.use(
       });
     });
     app.get('/create', function (req, res) {
-      res.end('create');
+      res.render('pages/create.html');
     });
     app.post('/create', function (req, res) {
-      res.end('submitted create');
+      // process create question here
+      res.redirect('/create');
     });
     app.get('/admin', function (req, res) {
       res.end('admin');
     });
+    app.get('/user', function (req, res) {
+      res.setHeader('Content-Type', 'application/json');
+      return res.end(
+        JSON.stringify(users[Math.floor(Math.random()*users.length)].user)
+      );
+    })
   })
 ).listen(1337, function () {
   console.log('Running at http://localhost:1337');
 });
 
-// SOCKET SERVER
+///////////////////
+// SOCKET SERVER //
 io = io.listen(server);
-var users = [];
-var questions = [];
 
-io.on('connection', function(socket){
-  console.log('a user connected');
+
+redisClient.on('error', function (err) {
+  console.error('redis error', err)
+});
+// redisClient.sadd('somdsetwithobj1', JSON.stringify({
+//   question: 'ok',
+//   another: 'yes'
+// }));
+// redisClient.srandmember('somdsetwithobj1', function (err, results) {
+//   console.log(JSON.parse(results).question);
+// });
+
+io.on('connection', function (socket) {
+  socket.on('users', function (user) {
+    users.push({
+      socket: socket,
+      user: user
+    });
+  });
+  socket.on('disconnect', function() {
+    var i;
+    for (i = 0; i < users.length; i++) {
+      if (users[i].socket === socket) {
+        delete users[i];
+      }
+    }
+  });
 });
 
-
-
+//////////////////////

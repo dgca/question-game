@@ -1,3 +1,11 @@
-(function ($) {
+(function ($, io) {
+    var socket = io();
 
-})(jQuery);
+    socket.on('connect', function () {
+        socket.emit('users', {
+            name: USERNAME,
+            image: USERIMG
+        });
+    });
+
+})(jQuery, io);
