@@ -149,9 +149,11 @@ var server = app.use(
       res.redirect('/create');
     });
     app.get('/admin', function (req, res) {
+      console.log('req');
       res.render('pages/admin.html', {
         name: req.session.auth.google.user.name,
-        img: req.session.auth.google.user.picture
+        img: req.session.auth.google.user.picture,
+        url: 'http://localhost:1337' + req.url
       });
     });
   })
