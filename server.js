@@ -106,7 +106,10 @@ var server = app.use(
       });
     });
     app.get('/questions', function (req, res) {
-      res.render('pages/questions.html', {});
+      res.render('pages/questions.html', {
+        name: req.session.auth.google.user.name,
+        img: req.session.auth.google.user.picture
+      });
     })
     app.get('/create', function (req, res) {
       res.render('pages/create.html', {

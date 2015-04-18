@@ -78,7 +78,19 @@ header {
   margin: 0 auto;
 }
 
-//add some Qs, bro
+// topbar
+
+.topbar {
+  p {
+    font-size: 1.2em;
+  }
+  img {
+    width: 50px;
+    border-radius: 50%;
+  }
+}
+
+// add some Qs, bro
 .add-button {
   float: right;
 }
@@ -100,11 +112,7 @@ header {
   width: 85%;
 }
 .question {
-  margin-bottom: 10px;
   font-size: 1.2em;
-}
-.votebox {
-
 }
 .vote {
   width: 34px;
@@ -117,8 +125,8 @@ header {
     background-image: url(../assets/active.png);
   }
 }
-
 .meta {
+  margin-top: 10px;
   font-size: 0.8em;
   color: #999999;
   // space out the pipe in the question meta
@@ -127,11 +135,8 @@ header {
   }
 }
 
-
-
-
-
-
-
-
-
+// footer
+footer {
+  position: fixed;
+  bottom: 0;
+}
