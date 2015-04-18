@@ -75,7 +75,6 @@ header {
     color: #d0d0d0;
 
     &:hover {
-      text-decoration: underline;
       color: white;
     }
   }
@@ -175,6 +174,8 @@ li {
 
 // let's style the homepage
 .index {
+  padding: 0 0 10px 0;
+
   .hero {
     padding: 20px 40px;
     background-color: white;
@@ -190,8 +191,9 @@ li {
 
   p {
     font-size: 1.2em;
-    line-height: 1.2em;
+    line-height: 1.4em;
     max-width: 440px;
+    color: #373737;
     @include bp-small {
       font-size: 1em;
     }
