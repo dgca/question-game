@@ -105,6 +105,9 @@ var server = app.use(
         img: req.session.auth.google.user.picture
       });
     });
+    app.get('/questions', function (req, res) {
+      res.render('pages/questions.html', {});
+    })
     app.get('/create', function (req, res) {
       res.render('pages/create.html', {
         successFlash: req.flash('success'),
@@ -174,7 +177,7 @@ io.on('connection', function (socket) {
   socket.on('disconnect', function() {
     var i;
     for (i = 0; i < users.length; i++) {
-      if (users[i].socket === socket) {
+      if (users[i] && users[i].socket === socket) {
         delete users[i];
       }
     }

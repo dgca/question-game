@@ -1,4 +1,10 @@
 <h1>Create Question Form</h1>
+<% if (typeof dangerFlash !== 'undefined') { %>
+    <span class="danger-message">
+        <%- dangerFlash %>
+    </span>
+<% } %>
+
 <form method="POST">
     <label for="question">Question</label>
     <textarea name="question" id="question" rows="3"></textarea>

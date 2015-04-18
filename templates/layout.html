@@ -1,13 +1,15 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
     <head>
-        <title>PKI Questions</title>
-        <link rel="stylesheet" href="/css/style.css">
+        <meta charset="UTF-8" />
+        <title>Question Game</title>
+        <link rel="stylesheet" href="css/main.css">
     </head>
     <body>
         <%- body %>
         <script src="bower_components/jquery/dist/jquery.min.js"></script>
         <script src="/scripts/socket.io.js"></script>
-        <% if (typeof user !== 'undefined') {%>
+        <% if (typeof name !== 'undefined') {%>
             <script>
                 var USERNAME = '<%- name %>',
                     USERIMG = '<%- img %>';
