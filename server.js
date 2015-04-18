@@ -145,7 +145,7 @@ var server = app.use(
         }
       }
 
-      req.flash('danger', 'Could not save your question. Please try again.');
+      req.flash('danger', 'Sorry, you can&#39;t submit an empty question. Please try again.');
       res.redirect('/create');
     });
     app.get('/admin', function (req, res) {
