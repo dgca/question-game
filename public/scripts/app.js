@@ -8,11 +8,8 @@
         });
     });
 
-    socket.on('new_questions', function (data) {
-        console.log('new_questions', data);
-    });
-
     socket.on('new_user_done', function (data) {
+        console.log('new_user_done');
         $('#user-img').attr('src', data.image);
         $('#user-name').text(data.name);
     });
@@ -37,8 +34,15 @@
     } else if (document.location.pathname === '/vote') {
         console.log('on /vote');
         socket.on('new_questions_done', function (data) {
-            console.log('new_questions_done', data);
+            var $list = $('.questions-list').empty();
+            for (var i = 0; i < data.length; i++) {
+                data[i] = $.parseJSON(data[i]);
+                $list.append(
+                    '<li class="question-item"><div class="disp-ib"><p class="question">{{question}}</p></div></li>'.replace('{{question}}', data[i].question)
+                );
+            }
         });
+
     }
 
 
