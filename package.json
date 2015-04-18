@@ -11,6 +11,7 @@
   "dependencies": {
     "body-parser": "^1.12.3",
     "connect": "^3.3.5",
+    "connect-flash": "^0.1.1",
     "connect-header": "0.0.5",
     "connect-redirection": "0.0.1",
     "connect-render": "^0.4.1",

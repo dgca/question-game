@@ -2,6 +2,7 @@ var everyauth = require('everyauth'),
   connect = require('connect'),
   bodyParser = require('body-parser'),
   cookieParser = require('cookie-parser'),
+  flash = require('connect-flash'),
   session = require('express-session'),
   connectRoute = require('connect-route'),
   redirect = require('connect-redirection'),
@@ -43,6 +44,10 @@ app.use(
       // sitename: 'connect-render demo site'
     }
   })
+);
+
+app.use(
+  flash()
 );
 
 app.use(
@@ -101,9 +106,25 @@ var server = app.use(
       });
     });
     app.get('/create', function (req, res) {
-      res.render('pages/create.html');
+      res.render('pages/create.html', {
+        successFlash: req.flash('success'),
+        dangerFlash: req.flash('danger')
+      });
     });
     app.post('/create', function (req, res) {
+      if (req.body.question) {
+        var inData = {
+          name: req.session.auth.google.user.name,
+          img: req.session.auth.google.user.picture,
+          question: req.body.question
+        };
+
+        redisClient.sadd('questions-app:questions', JSON.stringify(inData));
+
+        req.flash('success', 'Question saved successfully.')
+      } else {
+        req.flash('danger', 'Could not save your question. Please try again.');
+      }
       // process create question here
       res.redirect('/create');
     });
@@ -112,13 +133,19 @@ var server = app.use(
     });
     app.get('/user', function (req, res) {
       res.setHeader('Content-Type', 'application/json');
-      return res.end(
-        JSON.stringify(users[Math.floor(Math.random()*users.length)].user)
-      );
+      var user = users[Math.floor(Math.random()*users.length)];
+      if (user && user.user) {
+        res.end(
+          JSON.stringify(user.user)
+        );
+      } else {
+        res.statusCode = 404;
+        res.end('No active users at this time');
+      }
     })
   })
 ).listen(1337, function () {
-  console.log('Running at http://localhost:1337');
+  console.log('Running at http://localhost:1337.');
 });
 
 ///////////////////
