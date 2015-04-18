@@ -1,14 +1,14 @@
-//fonts
+// fonts
 h1, h2, h3, h4, h5, p, pre, blockquote {
   font-family: $base-font-stack;
 }
 h1 {
-  font-size: 2em;
+  font-size: 1.8em;
   font-weight: 200;
   color: #d0d0d0;
 }
 
-//objects
+// objects
 .tbl {
   display: table;
 }
@@ -20,7 +20,7 @@ h1 {
   text-align: right;
 }
 
-//dat header
+// header
 header {
   height: 80px;
   width: 100%;
@@ -28,8 +28,24 @@ header {
   background-color: #464648;
 }
 
+// content section
+.content {
+  padding: 100px;
+  background-color: peachpuff;
+}
+.questions-list {
+  max-width: 900px;
+  margin: 0 auto;
+}
+.question-item {
+  padding: 40px 30px;
+  border-radius: 5px;
+  background-color: white;
+}
+
 /*
 Classes:
 master-wrapper
-title
+content
+questions-list
 */
