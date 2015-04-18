@@ -10,4 +10,12 @@
         });
     }
 
+    // $('.vote-button').on('click', function () {
+        // if ($(this).hasClass('active')) {
+
+        // } else {
+
+        // }
+    // });
+
 })(jQuery, io);

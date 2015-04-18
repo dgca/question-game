@@ -14,8 +14,8 @@ var everyauth = require('everyauth'),
   io = require('socket.io'),
   redis = require('redis'),
   users = [],
-  redisClient = redis.createClient(6379, '10.0.32.209');
-
+  redisClient = redis.createClient(6379, '10.0.32.209'),
+  moment = require('moment');
 
 everyauth.google
   .appId('494665940570-7329c04lpf6vh98q179c0l9sg9d929jg.apps.googleusercontent.com')
@@ -41,7 +41,6 @@ app.use(
     root: __dirname + '/templates',
     cache: false, // `false` for debug
     helpers: {
-      // sitename: 'connect-render demo site'
     }
   })
 );
@@ -115,11 +114,16 @@ var server = app.use(
       });
     });
     app.get('/questions', function (req, res) {
-      res.render('pages/questions.html', {
-        name: req.session.auth.google.user.name,
-        img: req.session.auth.google.user.picture
+      redisClient.zrangebyscore(['questions-app:questions', '-inf', '+inf'], function (err, results) {
+        console.log(results);
+        res.render('pages/questions.html', {
+          moment: moment,
+          questions: results,
+          name: req.session.auth.google.user.name,
+          img: req.session.auth.google.user.picture
+        });
       });
-    })
+    });
     app.get('/create', function (req, res) {
       res.render('pages/create.html', {
         successFlash: req.flash('success'),
@@ -132,9 +136,10 @@ var server = app.use(
           name: req.session.auth.google.user.name,
           img: req.session.auth.google.user.picture,
           question: req.body.question,
-          created: (new Date).getTime()
+          created: (new Date).getTime(),
+          voters: []
         };
-        if (redisClient.sadd('questions-app:questions', JSON.stringify(inData))) {
+        if (redisClient.zadd('questions-app:questions', 1, JSON.stringify(inData))) {
           req.flash('success', 'Question saved successfully.')
           return res.redirect('/questions');
         }
@@ -171,13 +176,6 @@ io = io.listen(server);
 redisClient.on('error', function (err) {
   console.error('redis error', err)
 });
-// redisClient.sadd('somdsetwithobj1', JSON.stringify({
-//   question: 'ok',
-//   another: 'yes'
-// }));
-// redisClient.srandmember('somdsetwithobj1', function (err, results) {
-//   console.log(JSON.parse(results).question);
-// });
 
 io.on('connection', function (socket) {
   socket.on('users', function (user) {
