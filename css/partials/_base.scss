@@ -26,18 +26,25 @@ h1 {
   float: right;
 }
 
+// body
+body {
+  background-color: peachpuff;
+}
+
 // header
 header {
-  height: 80px;
-  width: 100%;
-  padding: 0 40px;
+  padding: 20px 10px;
   background-color: #464648;
+}
+.header-wrap {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 900px;
 }
 
 // content section
 .content {
-  padding: 100px;
-  background-color: peachpuff;
+  padding: 20px 10px;
 }
 .questions-list {
   max-width: 900px;
@@ -47,13 +54,20 @@ header {
 // here starts a single question item
 .question-item {
   padding: 20px 30px;
+  margin-bottom: 10px;
   border-radius: 5px;
   background-color: white;
   @include clearfix;
 }
+.qbox {
+  width: 85%;
+}
 .question {
   margin-bottom: 10px;
   font-size: 1.2em;
+}
+.votebox {
+
 }
 .vote {
   width: 34px;
@@ -75,3 +89,16 @@ header {
     margin: 0 5px;
   }
 }
+
+.textx {
+  display:table;
+}
+
+
+
+
+
+
+
+
+
