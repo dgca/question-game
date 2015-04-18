@@ -97,7 +97,7 @@ app.use('/vote', requireGoogleAuth);
 var server = app.use(
   connectRoute(function (app) {
     app.get('/', function (req, res) {
-      res.redirect('/vote');
+      res.render('pages/index.html');
     });
     app.get('/redirect_uri', function (req, res) {
       var uriArray = req.flash('redirect_uri');
