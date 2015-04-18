@@ -30,7 +30,7 @@ everyauth.google
       img: googleUserMetadata.picture
     };
   })
-  .redirectPath('/vote');
+  .redirectPath('/redirect_uri');
 
 app.use(
   header()
@@ -44,10 +44,6 @@ app.use(
       // sitename: 'connect-render demo site'
     }
   })
-);
-
-app.use(
-  flash()
 );
 
 app.use(
@@ -71,6 +67,10 @@ app.use(
 );
 
 app.use(
+  flash()
+);
+
+app.use(
   everyauth.middleware()
 );
 
@@ -86,6 +86,7 @@ var requireGoogleAuth = function(req, res, next) {
   if (req.session && req.session.auth && req.session.auth.google && req.session.auth.google.user && req.session.auth.google.user.name) {
     next();
   } else {
+    req.flash('redirect_uri', req.url);
     res.redirect('/auth/google')
   }
 };
@@ -98,7 +99,15 @@ var server = app.use(
   connectRoute(function (app) {
     app.get('/', function (req) {
       req.redirect('/vote');
-    })
+    });
+    app.get('/redirect_uri', function (req, res) {
+      var uriArray = req.flash('redirect_uri');
+      if (uriArray.length) {
+        res.redirect(uriArray[0]);
+      } else {
+        res.redirect('/vote');
+      }
+    });
     app.get('/vote', function (req, res) {
       res.render('pages/vote.html', {
         name: req.session.auth.google.user.name,
@@ -107,7 +116,7 @@ var server = app.use(
     });
     app.get('/questions', function (req, res) {
       res.render('pages/questions.html', {});
-    })
+    });
     app.get('/create', function (req, res) {
       res.render('pages/create.html', {
         successFlash: req.flash('success'),
@@ -119,17 +128,18 @@ var server = app.use(
         var inData = {
           name: req.session.auth.google.user.name,
           img: req.session.auth.google.user.picture,
-          question: req.body.question
+          question: req.body.question,
+          created: (new Date).getTime()
         };
 
         redisClient.sadd('questions-app:questions', JSON.stringify(inData));
 
         req.flash('success', 'Question saved successfully.')
+        res.redirect('/questions');
       } else {
         req.flash('danger', 'Could not save your question. Please try again.');
+        res.redirect('/create');
       }
-      // process create question here
-      res.redirect('/create');
     });
     app.get('/admin', function (req, res) {
       res.end('admin');
@@ -145,7 +155,7 @@ var server = app.use(
         res.statusCode = 404;
         res.end('No active users at this time');
       }
-    })
+    });
   })
 ).listen(1337, function () {
   console.log('Running at http://localhost:1337.');
