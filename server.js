@@ -96,8 +96,8 @@ app.use('/vote', requireGoogleAuth);
 
 var server = app.use(
   connectRoute(function (app) {
-    app.get('/', function (req) {
-      req.redirect('/vote');
+    app.get('/', function (req, res) {
+      res.redirect('/vote');
     });
     app.get('/redirect_uri', function (req, res) {
       var uriArray = req.flash('redirect_uri');
@@ -114,7 +114,7 @@ var server = app.use(
       });
     });
     app.get('/questions', function (req, res) {
-      redisClient.zrangebyscore(['questions-app:questions', '-inf', '+inf'], function (err, results) {
+      redisClient.smembers('questions-app:questions', function (err, results) {
         console.log(results);
         res.render('pages/questions.html', {
           moment: moment,
@@ -139,7 +139,7 @@ var server = app.use(
           created: (new Date).getTime(),
           voters: []
         };
-        if (redisClient.zadd('questions-app:questions', 1, JSON.stringify(inData))) {
+        if (redisClient.sadd('questions-app:questions', JSON.stringify(inData))) {
           req.flash('success', 'Question saved successfully.')
           return res.redirect('/questions');
         }
@@ -149,19 +149,10 @@ var server = app.use(
       res.redirect('/create');
     });
     app.get('/admin', function (req, res) {
-      res.end('admin');
-    });
-    app.get('/user', function (req, res) {
-      res.setHeader('Content-Type', 'application/json');
-      var user = users[Math.floor(Math.random()*users.length)];
-      if (user && user.user) {
-        res.end(
-          JSON.stringify(user.user)
-        );
-      } else {
-        res.statusCode = 404;
-        res.end('No active users at this time');
-      }
+      res.render('pages/admin.html', {
+        name: req.session.auth.google.user.name,
+        img: req.session.auth.google.user.picture
+      });
     });
   })
 ).listen(1337, function () {
@@ -183,6 +174,17 @@ io.on('connection', function (socket) {
       socket: socket,
       user: user
     });
+  });
+  socket.on('new_user', function () {
+      var user = users[Math.floor(Math.random()*users.length)];
+      if (user && user.user) {
+        socket.emit('new_user_done', user.user);
+        var questions = [];
+        redisClient.srandmember('questions-app:questions', 4, function (err, result) {
+          console.log('hi');
+          socket.emit('new_questions_done', result);
+        });
+      }
   });
   socket.on('disconnect', function() {
     var i;
