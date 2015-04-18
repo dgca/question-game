@@ -14,7 +14,7 @@ var everyauth = require('everyauth'),
   io = require('socket.io'),
   redis = require('redis'),
   users = [],
-  redisClient = redis.createClient();
+  redisClient = redis.createClient(6379, '10.0.32.209');
 
 
 everyauth.google
