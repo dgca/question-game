@@ -168,6 +168,8 @@ redisClient.on('error', function (err) {
   console.error('redis error', err)
 });
 
+var votables = [];
+
 io.on('connection', function (socket) {
   socket.on('users', function (user) {
     users.push({
@@ -177,6 +179,7 @@ io.on('connection', function (socket) {
   });
   socket.on('new_user', function () {
     var user;
+    votables = [];
     while (!user || !user.user) {
       user = users[Math.floor(Math.random()*users.length)];
     }
@@ -192,6 +195,30 @@ io.on('connection', function (socket) {
         delete users[i];
       }
     }
+  });
+  socket.on('add_vote', function (data) {
+    var found = false;
+    for (var i = votables.length - 1; i >= 0; i--) {
+      if (data.question === votables[i].question) {
+        found = true;
+        votables[i].votes++;
+      }
+    };
+    if (!found) {
+      votables.push({
+        question: data.question,
+        votes: 1
+      });
+    }
+    io.emit('vote_added', votables);
+  });
+  socket.on('del_vote', function (data) {
+    for (var i = votables.length - 1; i >= 0; i--) {
+      if (data.question === votables[i].question) {
+        votables[i].votes--;
+      }
+    };
+    io.emit('vote_added', votables);
   });
 });
 
