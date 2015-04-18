@@ -118,7 +118,9 @@ var server = app.use(
         console.log(results);
         res.render('pages/questions.html', {
           moment: moment,
-          questions: results
+          questions: results,
+          name: req.session.auth.google.user.name,
+          img: req.session.auth.google.user.picture
         });
       });
     });
