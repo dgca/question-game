@@ -10,10 +10,17 @@ h1 {
   font-weight: lighter;
   color: #d0d0d0;
 }
+h2 {
+  font-size: 1.2em;
+  color: #373737;
+}
 
 // objects
 .clearfix {
   @include clearfix;
+}
+.vertical-align {
+  @include vertical-align;
 }
 .disp-tbl {
   display: table;
@@ -41,6 +48,9 @@ h1 {
     background-color: #C75A5B;
   }
 }
+.spacer-sm {
+  margin: 0 5px;
+}
 
 // body
 body {
@@ -49,6 +59,7 @@ body {
 
 // header
 header {
+  height: 66px;
   padding: 20px 10px;
   background-color: #464648;
 
@@ -72,6 +83,8 @@ header {
 // content section
 .content {
   padding: 10px;
+  // min height is screen minus header and footer
+  min-height: calc(100vh - 116px);
 }
 .content-wrapper {
   max-width: 900px;
@@ -79,7 +92,6 @@ header {
 }
 
 // topbar
-
 .topbar {
   p {
     font-size: 1.2em;
@@ -135,8 +147,23 @@ header {
   }
 }
 
+// let's style the play session
+
+.play-session {
+  a {
+    color: black;
+  }
+  .active {
+    border: 2px solid #3BBBB1;
+  }
+}
+
 // footer
 footer {
-  position: fixed;
-  bottom: 0;
+  height: 50px;
+  text-align: center;
+  font-size: 0.8em;
+  font-weight: lighter;
+  color: white;
+  background-color: #464648;
 }
