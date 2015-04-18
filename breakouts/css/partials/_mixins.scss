@@ -1,0 +1,22 @@
+@mixin bp-medium {
+  @media only screen and (max-width: 900px) {
+    @content;
+  }
+}
+
+@mixin bp-small {
+  @media only screen and (max-width: 640px) {
+    @content;
+  }
+}
+
+@mixin clearfix {
+    &:before,
+    &:after {
+        content: "";
+        display: table;
+    }
+    &:after {
+        clear: both;
+    }
+}
