@@ -28,7 +28,7 @@
             var $results = $('.voting-results').empty();
             for (var i = questions.length - 1; i >= 0; i--) {
                 $results.append(
-                    '<li><span class="question">{{question}}</span><span class="votes">{{votes}}</span></li>'.replace('{{question}}', questions[i].question).replace('{{votes}}', questions[i].votes)
+                    '<li><span class="question">{{question}}</span><span class="votes flt-r">{{votes}}</span></li>'.replace('{{question}}', questions[i].question).replace('{{votes}}', questions[i].votes)
                 );
             };
         });

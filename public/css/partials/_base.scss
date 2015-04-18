@@ -177,7 +177,7 @@ li {
 
 // let's style the homepage
 .index {
-  padding: 0 0 10px 0;
+  padding-top: 0;
 
   .hero {
     padding: 20px 40px;
@@ -205,6 +205,7 @@ li {
   .links {
     text-align: center;
     font-weight: bold;
+
     a {
       display:block;
       padding: 20px 30px;
@@ -224,6 +225,7 @@ li {
 
 .admin {
   .join-url {
+    margin-top: 10px;
     margin-bottom: 10px;
   }
   .user {
