@@ -15,7 +15,10 @@ var everyauth = require('everyauth'),
   redis = require('redis'),
   users = [],
   redisClient = redis.createClient(6379, '10.0.32.209'),
-  moment = require('moment');
+  moment = require('moment'),
+  baseUrl = 'http://10.0.32.209:1337';
+
+
 
 everyauth.google
   .appId('494665940570-7329c04lpf6vh98q179c0l9sg9d929jg.apps.googleusercontent.com')
@@ -153,12 +156,12 @@ var server = app.use(
       res.render('pages/admin.html', {
         name: req.session.auth.google.user.name,
         img: req.session.auth.google.user.picture,
-        url: 'http://localhost:1337' + req.url
+        url: baseUrl
       });
     });
   })
 ).listen(1337, function () {
-  console.log('Running at http://localhost:1337.');
+  console.log('Running at ' + baseUrl);
 });
 
 ///////////////////
