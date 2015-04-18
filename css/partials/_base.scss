@@ -1,0 +1,35 @@
+//fonts
+h1, h2, h3, h4, h5, p, pre, blockquote {
+  font-family: $base-font-stack;
+}
+h1 {
+  font-size: 2em;
+  font-weight: 200;
+  color: #d0d0d0;
+}
+
+//objects
+.tbl {
+  display: table;
+}
+.tbl-mid {
+  display: table-cell;
+  vertical-align: middle;
+}
+.txt-r {
+  text-align: right;
+}
+
+//dat header
+header {
+  height: 80px;
+  width: 100%;
+  padding: 0 40px;
+  background-color: #464648;
+}
+
+/*
+Classes:
+master-wrapper
+title
+*/
