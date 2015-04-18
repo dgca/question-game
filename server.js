@@ -131,15 +131,14 @@ var server = app.use(
           question: req.body.question,
           created: (new Date).getTime()
         };
-
-        redisClient.sadd('questions-app:questions', JSON.stringify(inData));
-
-        req.flash('success', 'Question saved successfully.')
-        res.redirect('/questions');
-      } else {
-        req.flash('danger', 'Could not save your question. Please try again.');
-        res.redirect('/create');
+        if (redisClient.sadd('questions-app:questions', JSON.stringify(inData))) {
+          req.flash('success', 'Question saved successfully.')
+          return res.redirect('/questions');
+        }
       }
+
+      req.flash('danger', 'Could not save your question. Please try again.');
+      res.redirect('/create');
     });
     app.get('/admin', function (req, res) {
       res.end('admin');
