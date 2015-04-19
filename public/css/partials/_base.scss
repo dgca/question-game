@@ -162,8 +162,11 @@ li {
   }
 }
 
-// let's style the play session
+// let's style the voting screen
 .vote {
+  .current-player {
+    font-weight: bold;
+  }
   a {
     color: black;
   }
