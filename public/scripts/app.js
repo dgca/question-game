@@ -11,6 +11,7 @@
     socket.on('new_user_done', function (data) {
         $('#user-img').attr('src', data.image);
         $('#user-name').text(data.name);
+        $('.curr-player-name').text(data.name);
     });
 
     socket.on('end_voting_done', function (data) {
