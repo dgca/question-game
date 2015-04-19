@@ -25,7 +25,8 @@ everyauth.google
   .appSecret('9luP8aFH0eVsw-Hjb9tk85Fi')
   .scope('https://www.googleapis.com/auth/plus.login') // What you want access to
   .handleAuthCallbackError( function (req, res) {
-    res.end("Now why you wanna go and do that, and do that?");
+    res.setHeader("Content-type", "text/html");
+    res.end("<img style='display:block;margin:0 auto;' src='/assets/qtip.jpg'><p style='text-align:center;'>Now why you wanna go and do that, love, huh?</p>");
   })
   .findOrCreateUser( function (session, accessToken, accessTokenExtra, googleUserMetadata) {
     return {
