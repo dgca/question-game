@@ -16,7 +16,7 @@ var everyauth = require('everyauth'),
   users = [],
   redisClient = redis.createClient(6379, '127.0.0.1'),
   moment = require('moment'),
-  baseUrl = 'http://questions.DanWolfDev.com';
+  baseUrl = 'http://questions.danwolfdev.com';
 
 
 
