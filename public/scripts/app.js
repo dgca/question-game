@@ -35,6 +35,7 @@
                         .text(questions[i].question)
                         .next()
                         .text(questions[i].votes)
+                        .closest('li')
                 );
             };
         });
@@ -50,6 +51,7 @@
                         .data('question', data[i].question)
                         .find('.question')
                         .text(data[i].question)
+                        .closest('li')
                 );
             }
         });
