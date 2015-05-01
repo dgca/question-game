@@ -26,20 +26,28 @@
             socket.emit('end_voting', {});
         });
         socket.on('vote_added', function (questions) {
-            var $results = $('.voting-results').empty();
+            var $results = $('.voting-results').empty(),
+                $newItem = $('<li><span class="question"></span><span class="votes flt-r"></span></li>');
             for (var i = questions.length - 1; i >= 0; i--) {
                 $results.append(
-                    '<li><span class="question">{{question}}</span><span class="votes flt-r">{{votes}}</span></li>'.replace('{{question}}', questions[i].question).replace('{{votes}}', questions[i].votes)
+                    $newItem.clone()
+                        .find('.question').text(questions[i].question).next().text(questions[i].votes);
                 );
             };
         });
     } else if (document.location.pathname === '/vote') {
         socket.on('new_questions_done', function (data) {
-            var $list = $('.questions-list').empty();
+            var $list = $('.questions-list').empty(),
+                $newItem = $('<li class="question-item clickable"><div class="disp-ib"><p class="question"></p></div></li>');
             for (var i = 0; i < data.length; i++) {
                 data[i] = $.parseJSON(data[i]);
+
                 $list.append(
-                    '<li class="question-item clickable" data-question="{{question}}"><div class="disp-ib"><p class="question">{{question}}</p></div></li>'.replace('{{question}}', data[i].question).replace('{{question}}', data[i].question)
+                    $newItem.clone()
+                        .find('.clickable')
+                        .data('question', data[i].question)
+                        .find('.question')
+                        .text(data[i].question)
                 );
             }
         });
