@@ -28,6 +28,7 @@
         socket.on('vote_added', function (questions) {
             var $results = $('.voting-results').empty(),
                 $newItem = $('<li><span class="question"></span><span class="votes flt-r"></span></li>');
+            questions.sort(function(a, b) {return a.votes - b.votes});
             for (var i = questions.length - 1; i >= 0; i--) {
                 $results.append(
                     $newItem.clone()
