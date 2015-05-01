@@ -44,10 +44,9 @@
                 $newItem = $('<li class="question-item clickable"><div class="disp-ib"><p class="question"></p></div></li>');
             for (var i = 0; i < data.length; i++) {
                 data[i] = $.parseJSON(data[i]);
-                debugger;
+
                 $list.append(
                     $newItem.clone()
-                        .find('.clickable')
                         .data('question', data[i].question)
                         .find('.question')
                         .text(data[i].question)
