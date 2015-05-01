@@ -31,7 +31,10 @@
             for (var i = questions.length - 1; i >= 0; i--) {
                 $results.append(
                     $newItem.clone()
-                        .find('.question').text(questions[i].question).next().text(questions[i].votes);
+                        .find('.question')
+                        .text(questions[i].question)
+                        .next()
+                        .text(questions[i].votes)
                 );
             };
         });
