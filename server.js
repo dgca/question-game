@@ -14,9 +14,9 @@ var everyauth = require('everyauth'),
   io = require('socket.io'),
   redis = require('redis'),
   users = [],
-  redisClient = redis.createClient(6379, '10.0.32.209'),
+  redisClient = redis.createClient(6379, '127.0.0.1'),
   moment = require('moment'),
-  baseUrl = 'http://10.0.32.209:1337';
+  baseUrl = 'http://questions.danwolfdev.com';
 
 
 
@@ -161,7 +161,7 @@ var server = app.use(
       });
     });
   })
-).listen(1337, function () {
+).listen(80, function () {
   console.log('Running at ' + baseUrl);
 });
 
