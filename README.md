@@ -3,6 +3,7 @@
 The question game (QG) is a fun and engaging way to get to know eachother better. The question game selects a player at random (the subject), and gives the rest of the players (the voters) four questions to choose from. Once all players have finished voting or after 15 seconds, the votes are tallied and the subject must answer the most popular question.
 
 ## Installation
+```
 apt-get install git build-essential nginx tcl8.5
 git clone https://github.com/dgca/question-game.git
 cd question-game
@@ -13,7 +14,6 @@ npm install pm2 -g
 cd ..
 pm2 start server.js
 vi /etc/nginx/sites-enabled/default
-```
 # nginx config
 
 server {
@@ -30,7 +30,6 @@ server {
         proxy_cache_bypass $http_upgrade;
     }
 }
-```
 sudo service nginx restart
 cd ~
 wget http://download.redis.io/releases/redis-stable.tar.gz
@@ -41,3 +40,5 @@ make test
 make install
 cd utils
 ./install_server.sh
+```
+
