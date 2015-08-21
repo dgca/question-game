@@ -7,6 +7,7 @@ The question game (QG) is a fun and engaging way to get to know eachother better
 apt-get install git build-essential nginx tcl8.5
 git clone https://github.com/dgca/question-game.git
 cd question-game
+npm install
 npm install bower -g
 cd public
 bower install --allow-root
