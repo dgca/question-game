@@ -1,12 +1,13 @@
 (function ($, io) {
     var socket = io();
-
-    socket.on('connect', function () {
-        socket.emit('users', {
-            name: USERNAME,
-            image: USERIMG
+    if (typeof USERNAME !== 'undefined') {
+        socket.on('connect', function () {
+            socket.emit('users', {
+                name: USERNAME,
+                image: USERIMG
+            });
         });
-    });
+    }
 
     socket.on('new_user_done', function (data) {
         $('#user-img').attr('src', data.image);
