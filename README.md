@@ -2,6 +2,22 @@
 
 The question game (QG) is a fun and engaging way to get to know eachother better. The question game selects a player at random (the subject), and gives the rest of the players (the voters) four questions to choose from. Once all players have finished voting or after 15 seconds, the votes are tallied and the subject must answer the most popular question.
 
+## Install locally
+
+**Note: redis, node, and bower required**
+
+```bash
+# Install required packages
+npm install
+cd public
+bower install
+
+# Start the server
+node server.js
+
+# Site available at http://localhost:1337
+```
+
 ## Installation based on digital ocean node image
 ```bash
 # Install required packages
