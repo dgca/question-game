@@ -1,3 +1,4 @@
+// Init
 var bodyParser = require('body-parser'),
   cookieParser = require('cookie-parser'),
   everyauth = require('everyauth'),
@@ -19,6 +20,11 @@ var bodyParser = require('body-parser'),
   baseUrl = 'http://questions.danwolfdev.com',
   log4js = require('log4js');
 
+// Redis error handling
+redisClient.on('error', function (err) {
+  console.error('redis error', err)
+});
+
 // Logging Set up
 log4js.loadAppender('file');
 log4js.addAppender(log4js.appenders.file('logs/app.log'), 'app');
@@ -28,6 +34,7 @@ logger.setLevel('INFO');
 
 logger.info('Script server.js started');
 
+// Google auth setup
 everyauth
   .google
   .appId('494665940570-7329c04lpf6vh98q179c0l9sg9d929jg.apps.googleusercontent.com')
@@ -48,55 +55,31 @@ everyauth
   })
   .redirectPath('/redirect_uri');
 
-app.use(
-  header()
-);
-
-app.use(
-  render({
-    root: __dirname + '/templates',
-    cache: false, // `false` for debug
-    helpers: {
-    }
-  })
-);
-
-app.use(
-  bodyParser.urlencoded({ extended: false })
-);
-
-app.use(
-  bodyParser.json()
-);
-
-app.use(
-  cookieParser()
-);
-
-app.use(
-  session({
-    store: new redisSessionStore({
-      prefix: 'qg:sess:'
-    }),
-    secret: 'whoduasdasdfasoiuoiuosiuoinnit',
-    saveUninitialized: false,
-    resave: false
-  })
-);
-
-app.use(
-  flash()
-);
-
-app.use(
-  everyauth.middleware()
-);
-
-app.use(
-  redirect()
-);
-
-app.use(serveStatic('public', {}));
+app
+  .use(header())
+  .use(bodyParser.urlencoded({ extended: false }))
+  .use(bodyParser.json())
+  .use(cookieParser())
+  .use(flash())
+  .use(everyauth.middleware())
+  .use(redirect())
+  .use(serveStatic('public', {}))
+  .use(
+    session({
+      store: new redisSessionStore({
+        prefix: 'qg:sess:'
+      }),
+      secret: 'whoduasdasdfasoiuoiuosiuoinnit',
+      saveUninitialized: false,
+      resave: false
+    })
+  )
+  .use(
+    render({
+      root: __dirname + '/templates',
+      cache: false
+    })
+  );
 
 
 // securitah!
@@ -108,13 +91,15 @@ var requireGoogleAuth = function(req, res, next) {
     res.redirect('/auth/google')
   }
 };
-app.use('/', requireGoogleAuth);
-app.use('/create', requireGoogleAuth);
-app.use('/admin', requireGoogleAuth);
-app.use('/vote', requireGoogleAuth);
+app
+  .use('/', requireGoogleAuth)
+  .use('/create', requireGoogleAuth)
+  .use('/admin', requireGoogleAuth)
+  .use('/vote', requireGoogleAuth);
 
 var server = app.use(
   connectRoute(function (app) {
+    // Setup routes
     app.get('/', function (req, res) {
       res.render('pages/index.html');
     });
@@ -129,12 +114,12 @@ var server = app.use(
     app.get('/vote', function (req, res) {
       res.render('pages/vote.html', {
         name: req.session.auth.google.user.name,
-        img: req.session.auth.google.user.picture
+        img: req.session.auth.google.user.picture,
+        reqUrl: req.url
       });
     });
     app.get('/questions', function (req, res) {
       redisClient.smembers('questions-app:questions', function (err, results) {
-        console.log(results);
         res.render('pages/questions.html', {
           moment: moment,
           questions: results,
@@ -168,11 +153,11 @@ var server = app.use(
       res.redirect('/create');
     });
     app.get('/admin', function (req, res) {
-      console.log('req');
       res.render('pages/admin.html', {
         name: req.session.auth.google.user.name,
         img: req.session.auth.google.user.picture,
-        url: baseUrl
+        url: baseUrl,
+        reqUrl: req.url
       });
     });
   })
@@ -180,35 +165,33 @@ var server = app.use(
   logger.info('Running at http://localhost:1337');
 });
 
-///////////////////
-// SOCKET SERVER //
+// Start socket server
 io = io.listen(server);
 
-
-redisClient.on('error', function (err) {
-  console.error('redis error', err)
-});
 
 var votables = [];
 
 io.on('connection', function (socket) {
-  socket.on('users', function (user) {
+  socket.on('add_user', function (user) {
     users.push({
       socket: socket,
       user: user
     });
   });
-  socket.on('new_user', function () {
+  socket.on('next_player', function () {
     var user;
     votables = [];
     while (!user || !user.user) {
       user = users[Math.floor(Math.random()*users.length)];
     }
-    io.emit('new_user_done', user.user);
+    io.emit('next_player_chosen', user.user);
     redisClient.srandmember('questions-app:questions', 4, function (err, result) {
+      logger.info('NEW QUESTIONS', result);
       io.emit('new_questions_done', result);
+      io.emit('voting_results_updated', result);
     });
   });
+
   socket.on('disconnect', function() {
     var i;
     for (i = 0; i < users.length; i++) {
@@ -231,7 +214,7 @@ io.on('connection', function (socket) {
         votes: 1
       });
     }
-    io.emit('vote_added', votables);
+    io.emit('voting_results_updated', votables);
   });
   socket.on('del_vote', function (data) {
     for (var i = votables.length - 1; i >= 0; i--) {
@@ -239,8 +222,6 @@ io.on('connection', function (socket) {
         votables[i].votes--;
       }
     };
-    io.emit('vote_added', votables);
+    io.emit('voting_results_updated', votables);
   });
 });
-
-//////////////////////
