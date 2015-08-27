@@ -1,30 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>The Question Game</title>
-        <link rel="stylesheet" href="css/main.css">
-    </head>
-    <body>
-        <header>
-          <div class="header-wrap disp-tbl">
-            <h1 class="disp-tbl-mid"><a href="/">The Question Game</a></h1>
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>The Question Game</title>
+    <link rel="stylesheet" href="css/main.css">
+  </head>
+  <body>
+    <header>
+      <div class="header-wrap disp-tbl">
+        <h1 class="disp-tbl-mid"><a href="/">The Question Game</a></h1>
 
-          </div>
-        </header>
-        <%- body %>
-        <footer>
-            <p class="vertical-align">Lovingly created by Dan Wolf and Dan Cortes &#10084;</p>
-        </footer>
-        <script src="bower_components/jquery/dist/jquery.min.js"></script>
-        <script src="/scripts/socket.io.js"></script>
-        <% if (typeof name !== 'undefined') {%>
-            <script>
-                var USERNAME = '<%- name %>',
-                    USERIMG = '<%- img %>';
-            </script>
-        <% } %>
-        <script src="/scripts/app.js"></script>
-    </body>
+      </div>
+    </header>
+    <%- body %>
+    <footer>
+      <p class="vertical-align">Lovingly created by Dan Wolf and Dan Cortes &#10084;</p>
+    </footer>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="/scripts/socket.io.js"></script>
+    <% if (typeof name !== 'undefined') {%>
+    <script>
+      var USERNAME = '<%- name %>',
+          USERIMG = '<%- img %>';
+    </script>
+    <% } %>
+  <% if (typeof reqUrl !== 'undefined') { %>
+    <% if (reqUrl == '/admin') { %>
+    <script src="scripts/admin.js"></script>
+    <% } else if (reqUrl == '/vote') { %>
+    <script src="scripts/vote.js"></script>
+    <% } %>
+  <% } %>
+  </body>
 </html>
