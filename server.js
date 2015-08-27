@@ -24,6 +24,7 @@ var bodyParser = require('body-parser'),
 // Redis error handling
 redisClient.on('error', function (err) {
   console.error('redis error', err)
+  logger.error('REDIS CONNECT ERROR');
 });
 
 // Logging Set up
