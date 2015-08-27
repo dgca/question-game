@@ -1,34 +1,46 @@
-var everyauth = require('everyauth'),
-  connect = require('connect'),
-  bodyParser = require('body-parser'),
+var bodyParser = require('body-parser'),
   cookieParser = require('cookie-parser'),
+  everyauth = require('everyauth'),
   flash = require('connect-flash'),
   session = require('express-session'),
+  redisSessionStore = require('connect-redis')(session),
   connectRoute = require('connect-route'),
   redirect = require('connect-redirection'),
   serveStatic = require('serve-static'),
   header = require('connect-header'),
   render = require('connect-render'),
   ejs = require('ejs'),
-  app = connect(),
+  app = require('connect')(),
   io = require('socket.io'),
   redis = require('redis'),
   users = [],
   redisClient = redis.createClient(6379, '127.0.0.1'),
   moment = require('moment'),
-  baseUrl = 'http://questions.danwolfdev.com';
+  baseUrl = 'http://questions.danwolfdev.com',
+  log4js = require('log4js');
 
+// Logging Set up
+log4js.loadAppender('file');
+log4js.addAppender(log4js.appenders.file('logs/app.log'), 'app');
 
+var logger = log4js.getLogger('app');
+logger.setLevel('INFO');
 
-everyauth.google
+logger.info('Script server.js started');
+
+everyauth
+  .google
   .appId('494665940570-7329c04lpf6vh98q179c0l9sg9d929jg.apps.googleusercontent.com')
   .appSecret('9luP8aFH0eVsw-Hjb9tk85Fi')
-  .scope('https://www.googleapis.com/auth/plus.login') // What you want access to
+  .scope('profile') // What you want access to
   .handleAuthCallbackError( function (req, res) {
     res.setHeader("Content-type", "text/html");
     res.end("<img style='display:block;margin:0 auto;' src='/assets/qtip.jpg'><p style='text-align:center;'>Now why you wanna go and do that, love, huh?</p>");
   })
   .findOrCreateUser( function (session, accessToken, accessTokenExtra, googleUserMetadata) {
+    if (!googleUserMetadata || googleUserMetadata.name || googleUserMetadata.picture) {
+      logger.error('googleUserMeta invalid', googleUserMetadata);
+    }
     return {
       name: googleUserMetadata.name,
       img: googleUserMetadata.picture
@@ -63,6 +75,9 @@ app.use(
 
 app.use(
   session({
+    store: new redisSessionStore({
+      prefix: 'qg:sess:'
+    }),
     secret: 'whoduasdasdfasoiuoiuosiuoinnit',
     saveUninitialized: false,
     resave: false
@@ -161,8 +176,8 @@ var server = app.use(
       });
     });
   })
-).listen(8080, function () {
-  console.log('Running at ' + baseUrl);
+).listen(1337, function () {
+  logger.info('Running at http://localhost:1337');
 });
 
 ///////////////////
