@@ -11,6 +11,7 @@ The question game (QG) is a fun and engaging way to get to know eachother better
 npm install
 cd public
 bower install
+cd ..
 
 # Start the server
 node server.js
