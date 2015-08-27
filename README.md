@@ -18,7 +18,7 @@ node server.js
 # Site available at http://localhost:1337
 ```
 
-## Installation based on digital ocean node image
+## Installation on digital ocean node on ubuntu image
 ```bash
 # Install required packages
 apt-get install git build-essential nginx tcl8.5
