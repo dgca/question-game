@@ -19,15 +19,17 @@
   if (document.location.pathname === '/vote') {
     socket.on('new_questions_done', function (data) {
       var $list = $('.questions-list').empty(),
-        $newItem = $('<li class="question-item clickable"><div class="disp-ib"><p class="question"></p></div></li>');
+        $newItem = $('<li class="question-item clickable"><div class="disp-ib"><p class="question"></p><p class="asker"></p></div></li>');
       for (var i = 0; i < data.length; i++) {
-        data[i] = $.parseJSON(data[i]);
+        //data[i] = $.parseJSON(data[i]);
 
         $list.append(
           $newItem.clone()
             .data('question', data[i].question)
             .find('.question')
             .text(data[i].question)
+            .next('.asker')
+            .text('Asked by ' + data[i].name)
             .closest('li')
         );
       }

@@ -18,7 +18,8 @@ var bodyParser = require('body-parser'),
   redisClient = redis.createClient(6379, '127.0.0.1'),
   moment = require('moment'),
   baseUrl = 'http://questions.danwolfdev.com',
-  log4js = require('log4js');
+  log4js = require('log4js'),
+  uuid = require('node-uuid');
 
 // Redis error handling
 redisClient.on('error', function (err) {
@@ -32,7 +33,7 @@ log4js.addAppender(log4js.appenders.file('logs/app.log'), 'app');
 var logger = log4js.getLogger('app');
 logger.setLevel('INFO');
 
-logger.info('Script server.js started');
+logger.info('SCRIPT STARTED');
 
 // Google auth setup
 everyauth
@@ -46,7 +47,7 @@ everyauth
   })
   .findOrCreateUser( function (session, accessToken, accessTokenExtra, googleUserMetadata) {
     if (!googleUserMetadata || googleUserMetadata.name || googleUserMetadata.picture) {
-      logger.error('googleUserMeta invalid', googleUserMetadata);
+      logger.error('LOGIN ERROR: googleUserMeta invalid', googleUserMetadata);
     }
     return {
       name: googleUserMetadata.name,
@@ -141,6 +142,7 @@ var server = app.use(
           img: req.session.auth.google.user.picture,
           question: req.body.question,
           created: (new Date).getTime(),
+          uuid: uuid.v4(),
           voters: []
         };
         if (redisClient.sadd('questions-app:questions', JSON.stringify(inData))) {
@@ -162,7 +164,7 @@ var server = app.use(
     });
   })
 ).listen(1337, function () {
-  logger.info('Running at http://localhost:1337');
+  logger.info('SERVER RUNNING: http://localhost:1337');
 });
 
 // Start socket server
@@ -187,8 +189,14 @@ io.on('connection', function (socket) {
     io.emit('next_player_chosen', user.user);
     redisClient.srandmember('questions-app:questions', 4, function (err, result) {
       logger.info('NEW QUESTIONS', result);
+      var i;
+      for (i = 0; i < result.length; i++) {
+        result[i] = JSON.parse(result[i]);
+        result[i].votes = 0;
+      }
       io.emit('new_questions_done', result);
       io.emit('voting_results_updated', result);
+      votables = result;
     });
   });
 
@@ -208,12 +216,6 @@ io.on('connection', function (socket) {
         votables[i].votes++;
       }
     };
-    if (!found) {
-      votables.push({
-        question: data.question,
-        votes: 1
-      });
-    }
     io.emit('voting_results_updated', votables);
   });
   socket.on('del_vote', function (data) {

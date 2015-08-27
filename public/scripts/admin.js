@@ -6,7 +6,7 @@
     $currPlayerName = $('#curr-player-name'),
 
     // vote item template elm
-    $voteItemTemplate = $('<li><span class="question"></span><span class="votes flt-r"></span></li>');
+    $voteItemTemplate = $('<li><span class="question"></span><span class="votes flt-r"></span><span class="asker"></span></li>');
 
   // create connection and emit new user information
   socket.on('connect', function () {
@@ -44,17 +44,14 @@
 
       // first time question data comes in as string,
       // here we parse it and 0 out the vote count
-      if (typeof questionData == 'string') {
-        questionData = JSON.parse(questionData);
-        questionData.votes = 0;
-      }
-
       $votingResults.append(
         $voteItemTemplate.clone()
           .find('.question')
           .text(questionData.question)
           .next('.votes')
           .text(questionData.votes)
+          .next('.asker')
+          .text('Asked by ' + questionData.name)
           .closest('li')
       );
     };
