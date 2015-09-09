@@ -6,7 +6,9 @@
     $currPlayerName = $('#curr-player-name'),
 
     // vote item template elm
-    $voteItemTemplate = $('<li><span class="question"></span><span class="votes flt-r"></span><span class="asker"></span></li>');
+    $voteItemTemplate = $('<li><span class="question"></span><span class="votes flt-r"></span><span class="asker"></span></li>'),
+    $userItemTemplate = $('<li><span class="user crossed-out"></span></li>'),
+    $userList = $('.user-list');
 
   // create connection and emit new user information
   socket.on('connect', function () {
@@ -26,6 +28,23 @@
     $userImg.attr('src', data.image);
     $userName.text(data.name);
     $currPlayerName.text(data.name);
+  });
+
+  socket.on('user_list_updated', function (data) {
+    console.log('data', data);
+    if (data.users && data.userPool) {
+      $userList.empty();
+      data.users.forEach(function (elm) {
+        console.log('users', elm);
+        var $user = $userItemTemplate.clone();
+        $user.find('.user').text(elm.name).attr('id', elm.uuid);
+        $userList.append($user);
+      });
+      data.userPool.forEach(function (elm) {
+        console.log('userPool', elm);
+        $('#' + elm.uuid).removeClass('crossed-out');
+      });
+    }
   });
 
   // questions and votes updated

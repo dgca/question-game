@@ -15,6 +15,8 @@ var bodyParser = require('body-parser'),
   io = require('socket.io'),
   redis = require('redis'),
   users = [],
+  userPool = [],
+  votables = [],
   redisClient = redis.createClient(6379, '127.0.0.1'),
   moment = require('moment'),
   baseUrl = 'http://questions.danwolfdev.com',
@@ -47,13 +49,21 @@ everyauth
     res.end("<img style='display:block;margin:0 auto;' src='/assets/qtip.jpg'><p style='text-align:center;'>Now why you wanna go and do that, love, huh?</p>");
   })
   .findOrCreateUser( function (session, accessToken, accessTokenExtra, googleUserMetadata) {
-    if (!googleUserMetadata || googleUserMetadata.name || googleUserMetadata.picture) {
+    if (!googleUserMetadata || !googleUserMetadata.name || !googleUserMetadata.picture) {
       logger.error('LOGIN ERROR: googleUserMeta invalid', googleUserMetadata);
     }
-    return {
+    logger.info('LOGIN COMPLETE', {
+      session: session,
+      accessToken: accessToken,
+      accessTokenExtra: accessTokenExtra,
+      googleUserMetadata: googleUserMetadata
+    });
+    var userData = {
       name: googleUserMetadata.name,
-      img: googleUserMetadata.picture
+      img: googleUserMetadata.picture + '?sz=500'
     };
+    logger.info('SESSION USER DATA', userData);
+    return userData;
   })
   .redirectPath('/redirect_uri');
 
@@ -63,19 +73,19 @@ app
   .use(bodyParser.json())
   .use(cookieParser())
   .use(flash())
-  .use(everyauth.middleware())
-  .use(redirect())
-  .use(serveStatic('public', {}))
   .use(
     session({
       store: new redisSessionStore({
         prefix: 'qg:sess:'
       }),
-      secret: 'whoduasdasdfasoiuoiuosiuoinnit',
+      secret: 'as98d7f6as98d7f68dgasd76ga9s8d76asdf',
       saveUninitialized: false,
       resave: false
     })
   )
+  .use(everyauth.middleware())
+  .use(redirect())
+  .use(serveStatic('public', {}))
   .use(
     render({
       root: __dirname + '/templates',
@@ -89,6 +99,8 @@ var requireGoogleAuth = function(req, res, next) {
   if (req.session && req.session.auth && req.session.auth.google && req.session.auth.google.user && req.session.auth.google.user.name) {
     next();
   } else {
+    logger.info('LOGIN REQUIRED', req.session);
+
     req.flash('redirect_uri', req.url);
     res.redirect('/auth/google')
   }
@@ -126,7 +138,7 @@ var server = app.use(
           moment: moment,
           questions: results,
           name: req.session.auth.google.user.name,
-          img: req.session.auth.google.user.picture
+          img: req.session.auth.google.user.picture + '?sz=900'
         });
       });
     });
@@ -171,23 +183,102 @@ var server = app.use(
 // Start socket server
 io = io.listen(server);
 
-
-var votables = [];
-
 io.on('connection', function (socket) {
   socket.on('add_user', function (user) {
+    var tempUsers = [],
+      tempUserPool = [],
+      i;
+
+    user.uuid = uuid.v4();
     users.push({
       socket: socket,
       user: user
     });
+    userPool.push({
+      socket: socket,
+      user: user
+    });
+
+    for (i = 0;i < users.length; i++) {
+      if (users[i] && users[i].user) {
+        tempUsers.push(users[i].user);
+      }
+    }
+
+    for (i = 0;i < userPool.length; i++) {
+      if (userPool[i] && userPool[i].user) {
+        tempUserPool.push(userPool[i].user);
+      }
+    }
+    io.emit('user_list_updated', {
+      users: tempUsers,
+      userPool: tempUserPool
+    });
   });
   socket.on('next_player', function () {
-    var user;
-    votables = [];
-    while (!user || !user.user) {
-      user = users[Math.floor(Math.random()*users.length)];
+    var user,
+      votables = [],
+      randomIndex,
+      i = 0;
+    logger.info('NEXT PLAYER CALLED');
+
+    logger.info('USER POOL', {
+      userPoolLength: userPool.length,
+      userPool: userPool
+    });
+
+    // clean up userPool
+    for (i = userPool.length - 1; i > -1; i--) {
+      if (!userPool[i]) {
+        delete userPool[i];
+      }
     }
+
+    if (!userPool.length) {
+      logger.info('USER POOL EMPTY');
+      logger.info('users', users);
+      userPool = users.slice(0);
+    }
+
+    var count = 100;
+    while (!user && --count) {
+      randomIndex = Math.floor(Math.random()*userPool.length-1);
+      user = userPool.splice(randomIndex, 1)[0];
+    }
+
+    // clean up userPool
+    for (i = userPool.length - 1; i > -1; i--) {
+      if (!userPool[i]) {
+        delete userPool[i];
+      }
+    }
+
+    logger.info('USER REMOVED FROM POOL', userPool);
+    logger.info('NEW PERSON CHOSEN', user.user);
+
+    var tempUsers = [],
+      tempUserPool = [],
+      i;
+
+    for (i = 0;i < users.length; i++) {
+      if (users[i] && users[i].user) {
+        tempUsers.push(users[i].user);
+      }
+    }
+    for (i = 0;i < userPool.length; i++) {
+      if (userPool[i] && userPool[i].user) {
+        tempUserPool.push(userPool[i].user);
+      }
+    }
+
+    io.emit('user_list_updated', {
+      users: tempUsers,
+      userPool: tempUserPool
+    });
+
     io.emit('next_player_chosen', user.user);
+
+    // generate questions
     redisClient.srandmember('questions-app:questions', 4, function (err, result) {
       logger.info('NEW QUESTIONS', result);
       var i;
@@ -200,14 +291,35 @@ io.on('connection', function (socket) {
       votables = result;
     });
   });
-
   socket.on('disconnect', function() {
-    var i;
+    var tempUsers = [],
+      tempUserPool = [],
+      i;
+
     for (i = 0; i < users.length; i++) {
       if (users[i] && users[i].socket === socket) {
         delete users[i];
       }
     }
+    for (i = 0; i < userPool.length; i++) {
+      if (userPool[i] && userPool[i].socket === socket) {
+        delete userPool[i];
+      }
+    }
+    for (i = 0;i < users.length; i++) {
+      if (users[i] && users[i].user) {
+        tempUsers.push(users[i].user);
+      }
+    }
+    for (i = 0;i < userPool.length; i++) {
+      if (userPool[i] && userPool[i].user) {
+        tempUserPool.push(userPool[i].user);
+      }
+    }
+    io.emit('user_list_updated', {
+      users: tempUsers,
+      userPool: tempUserPool
+    });
   });
   socket.on('add_vote', function (data) {
     var found = false;
