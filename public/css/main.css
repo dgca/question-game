@@ -53,15 +53,15 @@ html {
   box-sizing: inherit; }
 
 h1, h2, h3, h4, h5 {
-  font-family: "Din Regular", "Helvetica Neue", Helvetica, Arial, sans-serif; }
+  font-family: "Roboto Light", sans-serif; }
 
 p, a, ul, li, blockquote, span {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+  font-family: "Roboto Light", sans-serif; }
 
 h1 {
   font-size: 1.6em;
   font-weight: lighter;
-  color: #d0d0d0; }
+  color: #FFFFFF; }
 
 h2 {
   margin: 20px 0 10px;
@@ -121,12 +121,12 @@ body {
 header {
   height: 66px;
   padding: 20px 10px;
-  background-color: #464648; }
+  background-color: #37474F; }
   header a {
     font-weight: lighter;
-    color: #d0d0d0; }
+    color: #FFFFFF; }
     header a:hover {
-      color: white; }
+      color: rgba(255, 255, 255, 0.6); }
 
 .header-wrap {
   margin: 0 auto;
@@ -194,38 +194,45 @@ li {
 .vote .active {
   border: 2px solid #3BBBB1; }
 
-.index {
-  padding-top: 0; }
-  .index .hero {
-    padding: 20px 40px;
-    background-color: white; }
-    @media only screen and (max-width: 640px) {
-      .index .hero {
-        padding: 20px; } }
-  .index h2 {
-    font-size: 1.8em;
-    color: #3BBBB1; }
-  .index p {
-    font-size: 1.2em;
-    line-height: 1.4em;
-    max-width: 440px;
-    color: #373737; }
-    @media only screen and (max-width: 640px) {
-      .index p {
-        font-size: 1em; } }
-  .index .links {
-    text-align: center;
+.index .tabs-tab {
+  float: left;
+  display: block;
+  width: 50%;
+  padding: 0;
+  margin: 0;
+  color: #FFFFFF;
+  font-family: "Roboto Medium", sans-serif;
+  background: #37474F;
+  text-align: center;
+  line-height: 40px;
+  font-size: 14px;
+  border-bottom: 2px solid #37474F; }
+  .index .tabs-tab:hover {
+    color: rgba(255, 255, 255, 0.6); }
+  .index .tabs-tab.selected {
+    border-bottom: 2px solid #F44336; }
+.index .hello {
+  float: right;
+  margin: 10px 10px 0; }
+.index section.hidden {
+  display: none; }
+.index section.section-vote .question {
+  margin: 10px;
+  padding: 10px;
+  background: #FFFFFF;
+  border: 2px solid #FFFFFF; }
+  .index section.section-vote .question.selected {
+    border: 2px solid #F44336; }
+  .index section.section-vote .question-text {
+    font-size: 18px; }
+  .index section.section-vote .question-asker {
+    display: block;
+    font-size: 14px;
+    bottom: 10px;
+    left: 0;
+    margin-top: 10px;
+    color: rgba(0, 0, 0, 0.6);
     font-weight: bold; }
-    .index .links a {
-      display: block;
-      padding: 20px 30px;
-      margin: 10px 0;
-      border-radius: 5px;
-      background-color: #464648;
-      color: white; }
-    .index .links li {
-      padding: 0;
-      background-color: #464648; }
 
 .admin .join-url {
   margin-top: 10px;
@@ -250,7 +257,7 @@ footer {
   font-size: 0.8em;
   font-weight: lighter;
   color: white;
-  background-color: #464648; }
+  background-color: #37474F; }
 
 .question-item {
   cursor: pointer; }
