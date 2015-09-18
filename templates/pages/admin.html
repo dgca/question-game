@@ -1,15 +1,25 @@
 <section class="content admin">
-  <div class="content-wrapper">
-    <h2 class="join-url">Join the game at: <strong><%= url %></strong></h2>
+  <div class="content-wrapper sizer">
+    <div class="hello">Join the game at: <strong><%= url %></strong></div>
 
-    <div class="user">
-      <img src="" id="user-img"><br>
-      <span id="user-name-span"></span>
+    <div class="current-player">
+      <div class="avatar-wrapper">
+        <div class="avatar">
+          <img src="" id="user-img">
+        </div>
+      </div>
+      <div class="name">
+        <p>Current Player:</p>
+        <span id="user-name-span"></span>
+      </div>
+      </div>
+    </div>
+
     </div>
 
     <ul class="voting-results"></ul>
 
-    <a href="javascript:;" id="next-player"><p class="spanbutton">Next Player</p></a>
+    <a href="javascript:;" id="next-player" class="button sizer">Next Player</a>
     <div class="clearfix"></div>
 
     <ul class="user-list">

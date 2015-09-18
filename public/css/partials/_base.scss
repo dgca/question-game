@@ -44,10 +44,11 @@ p {
 }
 
 .main-wrapper {
-  // include min-height or something so that the footer doesn't float around like an idiot
+  @include clearfix;
 }
 
 .content-wrapper {
+  @include clearfix;
   @include breakpoint(med) {
     padding: 0 0.5em;
   }

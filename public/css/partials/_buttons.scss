@@ -1,0 +1,19 @@
+.button {
+  background-color: $color-secondary;
+  border-radius: 3px;
+  box-shadow: none;
+  color: white;
+  display: block;
+  padding: 0.8em;
+  text-align: center;
+
+  &:hover {
+    background-color: darken($color-secondary, 10);
+  }
+
+  &:hover:not(:active) {
+    @include shadow;
+    transition: all 0.2s;
+    transform: translateY(-2px);
+  }
+}
