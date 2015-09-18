@@ -33,6 +33,10 @@ footer {
     text-align: center;
 }
 
+h2 {
+  font-size: 1.4em;
+}
+
 p {
   line-height: 1.4;
 }
@@ -67,4 +71,9 @@ p {
 
 .vote {
   @include clearfix;
+}
+
+.error-message {
+  color: $font-warning;
+  font-size: 0.8em;
 }

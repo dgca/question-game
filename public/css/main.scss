@@ -14,11 +14,13 @@ $white: #fff;
 $black: #000;
 $font-white: rgba(255, 255, 255, 0.87);
 $font-black: rgba(0, 0, 0, 0.87);
+$font-warning: #ff0033;
 
 @import "partials/reset";
 @import "partials/mixins";
 @import "partials/tabs";
 @import "partials/cards";
 @import "partials/buttons";
+@import "partials/create";
 @import "partials/admin";
 @import "partials/base";
