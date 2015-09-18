@@ -1,279 +1,45 @@
-// fonts
-h1, h2, h3, h4, h5 {
-  font-family: $roboto-light;
-}
-p, a, ul, li, blockquote, span {
-  font-family: $roboto-light;
-}
-h1 {
-  font-size: 1.6em;
-  font-weight: lighter;
-  color: $white;
-}
-h2 {
-  margin: 20px 0 10px;
-  font-size: 1.2em;
-  color: #373737;
-}
-a {
-  text-decoration: none;
-}
-strong {
-  font-weight: bold;
-}
-
-// objects
-.clearfix {
-  @include clearfix;
-}
-.vertical-align {
-  @include vertical-align;
-}
-.disp-tbl {
-  display: table;
-}
-.disp-tbl-mid {
-  display: table-cell;
-  vertical-align: middle;
-}
-.disp-ib {
-  display: inline-block;
-}
-.txt-r {
-  text-align: right;
-}
-.flt-r {
-  float: right;
-}
-.spanbutton, button {
-  padding: 20px;
-  border: none;
-  border-radius: 10px;
-  font-size: 1em;
-  min-width: 140px;
-  color: white;
-  background-color: #E06363;
-
-  &:hover {
-    background-color: #C75A5B;
-  }
-}
-.spacer-sm {
-  margin: 0 5px;
-}
-
-// body
 body {
-  background-color: #E6E6E6;
+  background-color: $color-primary-light;
+  color: $font-black;
+  font-size: 20px;
+  font-family: $sans-serif;
 }
 
-// header
 header {
-  height: 66px;
-  padding: 20px 10px;
-  background-color: $dark-blue;
+  background-color: $color-primary-dark;
 
-  a {
-    font-weight: lighter;
+  h1 {
     color: $white;
+    font-size: 1.2em;
 
-    &:hover {
-      color: $white-highlight;
+    a {
+      display: inline-block;
+      padding: 1.2em;
     }
   }
 }
-.header-wrap {
+
+p {
+  line-height: 1.2;
+}
+
+.sizer {
   margin: 0 auto;
+  max-width: 920px;
   width: 100%;
-  max-width: 900px;
 }
 
-// content section
-.content {
-  padding: 10px;
-  // min height is screen minus header and footer
-  min-height: calc(100vh - 116px);
-}
-.content-wrapper {
-  max-width: 900px;
-  margin: 0 auto;
+.main-wrapper {
+  box-sizing: content-box;
+  padding: 0 0.5em;
 }
 
-// topbar
-.topbar {
-  img {
-    width: 50px;
-    border-radius: 50%;
-  }
-}
+.hello {
+  font-weight: lighter;
+  margin: 0.5em auto;
+  text-align: right;
 
-// here come the questions
-.questions-list {
-  max-width: 900px;
-  margin: 0 auto;
-}
-
-// here starts a single question item
-li {
-  padding: 20px 30px;
-  margin: 10px 0;
-  border-radius: 5px;
-  background-color: white;
-}
-.qbox {
-  width: 85%;
-}
-.question {
-  font-size: 1.2em;
-}
-.upvote {
-  width: 34px;
-  height: 38px;
-
-  &.inactive {
-    background-image: url(../assets/inactive.png);
-  }
-  &.active {
-    background-image: url(../assets/active.png);
-  }
-}
-.meta {
-  margin-top: 10px;
-  font-size: 0.8em;
-  color: #999999;
-  // space out the pipe in the question meta
-  .pipe {
-    margin: 0 5px;
-  }
-}
-
-// let's style the create screen
-.create {
-  label {
-    display: none;
-  }
-  textarea {
-    width: 100%;
-  }
-  .danger-message {
-    display: block;
-    margin: 10px 0;
-    color: red;
-  }
-}
-
-// let's style the voting screen
-.vote {
-  .current-player {
+  strong {
     font-weight: bold;
   }
-  a {
-    color: black;
-  }
-  li {
-    border: 2px solid white;
-  }
-  .active {
-    border: 2px solid #3BBBB1;
-  }
-}
-
-// let's style the homepage
-.index {
-  .tabs {
-    &-tab {
-      float: left;
-      display: block;
-      width: 50%;
-      padding: 0;
-      margin: 0;
-      color: $white;
-      &:hover {
-        color: $white-highlight;
-      }
-      font-family: $roboto-medium;
-      background: $dark-blue;
-      text-align: center;
-      line-height: 40px;
-      font-size: 14px;
-      border-bottom: 2px solid $dark-blue;
-      &.selected {
-        border-bottom: 2px solid $button-highlight-red;
-      }
-    }
-  }
-  .hello {
-    float: right;
-    margin: 10px 10px 0;
-  }
-  section {
-    &.hidden {
-      display: none;
-    }
-    &.section-vote {
-      .question {
-        margin: 10px;
-        padding: 10px;
-        background: $white;
-        border: 2px solid $white;
-        &.selected {
-          border: 2px solid $button-highlight-red;
-        }
-        &-text {
-          font-size: 18px;
-        }
-        &-asker {
-          display: block;
-          font-size: 14px;
-          bottom: 10px;
-          left: 0;
-          margin-top: 10px;
-          color: $black-highlight;
-          font-weight: bold;
-        }
-      }
-    }
-  }
-}
-
-// let's style the admin
-.admin {
-  .join-url {
-    margin-top: 10px;
-    margin-bottom: 10px;
-  }
-  .user {
-    text-align: center;
-    img {
-      width: 300px;
-      border-radius: 50%;
-    }
-    span {
-      font-size: 2em;
-      font-weight: bold;
-    }
-  }
-  .spanbutton {
-    text-align: center;
-    margin-top: 10px;
-  }
-  .user-list {
-    .crossed-out {
-      text-decoration: line-through;
-    }
-  }
-}
-
-// footer
-footer {
-  height: 50px;
-  text-align: center;
-  font-size: 0.8em;
-  font-weight: lighter;
-  color: white;
-  background-color: $dark-blue;
-}
-
-.question-item {
-  cursor: pointer
 }

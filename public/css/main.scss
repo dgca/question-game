@@ -1,7 +1,22 @@
 // sass --watch main.scss:main.css --style compressed
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,300,500,700);
+
+// FONTS
+$sans-serif: 'Roboto', helvetica, arial, sans-serif;
+
+// COLORS
+$color-primary: #78909c;
+$color-primary-dark: #37474f;
+$color-primary-light: #eceff1;
+$color-secondary: #f44336;
+$color-secondary-light: #ffcdd2;
+$white: #fff;
+$black: #000;
+$font-white: rgba(255, 255, 255, 0.87);
+$font-black: rgba(0, 0, 0, 0.87);
 
 @import "partials/reset";
-@import "partials/variables";
 @import "partials/mixins";
+@import "partials/tabs";
+@import "partials/cards";
 @import "partials/base";
-@import "partials/hacks";

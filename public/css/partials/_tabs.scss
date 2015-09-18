@@ -1,0 +1,23 @@
+.tabs-wrapper {
+  @include shadow;
+  background-color: $color-primary-dark;
+}
+
+.tabs {
+  display: flex;
+}
+
+.tab {
+color: $white;
+display: block;
+font-size: 0.8em;
+max-width: 190px;
+padding: 1em;
+text-align: center;
+text-transform: uppercase;
+width: 50%;
+
+  &.selected {
+    border-bottom: 2px solid $color-secondary;
+  }
+}

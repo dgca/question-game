@@ -1,0 +1,10 @@
+.card {
+  @include shadow;
+  background-color: $white;
+  margin-bottom: 1em;
+  padding: 1em;
+
+  .question-asker {
+
+  }
+}
