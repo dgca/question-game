@@ -14,9 +14,8 @@
 
   <%- body %>
 
-  <footer>
-    <p class="vertical-align">Lovingly created by Dan Wolf and Dan Cortes &#10084;</p>
-  </footer>
+  <footer>Made by Dan Wolf 🐺 and Dan Cortes 💩</footer>
+
   <script src="bower_components/jquery/dist/jquery.min.js"></script>
   <script src="/scripts/socket.io.js"></script>
   <% if (typeof name !== 'undefined') {%>
@@ -25,12 +24,18 @@
         USERIMG = '<%- img %>';
   </script>
   <% } %>
-<% if (typeof reqUrl !== 'undefined') { %>
-  <% if (reqUrl == '/admin') { %>
-  <script src="scripts/admin.js"></script>
-  <% } else if (reqUrl == '/vote') { %>
-  <script src="scripts/vote.js"></script>
+  <% if (typeof reqUrl !== 'undefined') { %>
+    <% if (reqUrl == '/admin') { %>
+    <script src="scripts/admin.js"></script>
+    <% } else if (reqUrl == '/vote') { %>
+    <script src="scripts/vote.js"></script>
+    <% } %>
   <% } %>
-<% } %>
+  <script>
+    $(document).ready(function(){
+      var h = $('header').outerHeight() + $('footer').outerHeight();
+      $('.main-wrapper').css('min-height', 'calc(100vh - ' + h + 'px)')
+    });
+  </script>
 </body>
 </html>

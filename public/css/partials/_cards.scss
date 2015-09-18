@@ -4,7 +4,19 @@
   margin-bottom: 1em;
   padding: 1em;
 
-  .question-asker {
+  .content {
+    margin-bottom: 0.5em;
+  }
 
+  .meta {
+    @include lighten;
+    font-size: 0.7em;
+    font-weight: bold;
+  }
+
+  &.selected {
+    background-color: $color-primary;
+    color: $white;
+    transition: all 0.1s;
   }
 }

@@ -1,12 +1,12 @@
-@mixin bp-medium {
-  @media only screen and (max-width: 900px) {
-    @content;
+@mixin breakpoint($value) {
+  @if $value == lg {
+    @media (min-width: 921px) { @content; }
   }
-}
-
-@mixin bp-small {
-  @media only screen and (max-width: 640px) {
-    @content;
+  @if $value == med {
+    @media (max-width: 920px) { @content; }
+  }
+  @if $value == sm {
+    @media (max-width: 420px) { @content; }
   }
 }
 
@@ -29,4 +29,8 @@
 
 @mixin shadow {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+@mixin lighten {
+  opacity: 0.54;
 }
