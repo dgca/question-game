@@ -22,7 +22,7 @@ header {
 
   a {
     display: inline-block;
-    padding: 1.2em 1.2em 0.8em;
+    padding: 0.8em 1.2em;
   }
 }
 
@@ -55,6 +55,7 @@ p {
 }
 
 .hello {
+  font-size: 0.8em;
   font-weight: lighter;
   margin: 0.5em auto;
   text-align: right;

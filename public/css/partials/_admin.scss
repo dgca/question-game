@@ -2,6 +2,7 @@
   @include clearfix;
   @include shadow;
   background-color: $color-primary;
+  margin-bottom: 0.5em;
   position: relative;
 
   .name {
@@ -10,6 +11,10 @@
     padding: 1em 2em;
     position: absolute;
     width: 50%;
+    @include breakpoint(sm) {
+      font-size: 0.5em;
+      padding: 1em  D;
+    }
 
     p {
       font-size: 1.2em;
@@ -34,9 +39,29 @@
       left: 0;
       position: absolute;
       top: 50%;
-      -webkit-transform: translateY(-50%);
       transform: translateY(-50%);
       width: 100%;
+    }
+  }
+}
+
+.voting-results {
+  .card {
+    padding-right: 4em;
+    position: relative;
+  }
+
+  .vote-count {
+    position: absolute;
+    right: 0;
+    text-align: center;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4em;
+
+    span {
+      @include lighten;
+      font-size: 1.5em;
     }
   }
 }

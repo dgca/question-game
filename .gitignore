@@ -3,4 +3,5 @@ public/bower_components
 user-stories.md
 logs/*.log
 dump.rdb
-public/css/.sass-cache
+**/.sass-cache/
+**/main.scss.map
